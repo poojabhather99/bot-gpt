@@ -1,0 +1,84 @@
+# BOT GPT — Conversational AI Platform
+
+A production-grade Q&A assistant with General Chat and RAG (document-grounded) modes, built with FastAPI + Groq LLaMA 3.3 + SQLite.
+
+## Features
+- 🔐 User auth (register/login, session-based)
+- 💬 General Q&A with rolling conversation history
+- 📄 RAG mode — ask questions strictly from uploaded PDFs
+- 🧠 Auto-summarization when history gets too long
+- 🗂 Persistent chat history — reloads on login
+- 🐳 Fully Dockerized
+
+## Project Structure
+```
+bot-gpt/
+├── apis/
+│   ├── main.py              # FastAPI app + routes
+│   ├── general_question.py  # General Q&A router
+│   └── rag_question.py      # RAG router
+├── app/
+│   ├── auth.py              # Auth logic (bcrypt, sessions)
+│   ├── chat_store.py        # DB operations for chats/messages
+│   ├── database.py          # SQLite init + connection
+│   ├── pdf_parser.py        # PDF text extraction
+│   ├── chunker.py           # Chunking strategies
+│   └── retriever.py         # Chunk retrieval logic
+├── ui/
+│   └── ui_main.py           # Streamlit frontend
+├── tests/
+│   └── test_core.py         # Unit tests
+├── Dockerfile               # API container
+├── Dockerfile.streamlit     # UI container
+├── docker-compose.yml       # Local dev
+└── requirements.txt
+```
+
+## Quickstart (local)
+
+```bash
+# 1. Clone and install
+git clone https://github.com/YOUR_USERNAME/bot-gpt.git
+cd bot-gpt
+python -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+
+# 2. Set env vars
+cp .env.example .env
+# Add your GROQ_API_KEY to .env
+
+# 3. Run API
+uvicorn apis.main:app --reload --port 8000
+
+# 4. Run UI (separate terminal)
+streamlit run ui/ui_main.py
+```
+
+## Docker
+
+```bash
+docker compose up --build
+# API → http://localhost:8000/docs
+# UI  → http://localhost:8501
+```
+
+## Environment Variables
+
+| Variable | Description |
+|---|---|
+| `GROQ_API_KEY` | Your Groq API key |
+| `DB_PATH` | SQLite file path (default: `qa_assistant.db`) |
+| `API_URL` | Backend URL for Streamlit (default: `http://127.0.0.1:8000`) |
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/auth/register` | Register new user |
+| POST | `/auth/login` | Login → session_id |
+| POST | `/general/ask` | General Q&A |
+| POST | `/document/upload` | Upload PDF |
+| POST | `/document/ask` | RAG Q&A |
+| GET | `/user/chats` | Load all chats |
+| DELETE | `/conversations/{id}` | Delete chat |
+| GET | `/health` | Health check |
