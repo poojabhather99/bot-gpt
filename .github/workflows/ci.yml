@@ -26,7 +26,7 @@ jobs:
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           DB_PATH: test.db
-        run: pytest tests/ -v
+        run: python -m pytest tests/ -v
 
   docker:
     runs-on: ubuntu-latest
