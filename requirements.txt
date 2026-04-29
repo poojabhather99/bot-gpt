@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+groq
+pdfplumber
+bcrypt
+python-dotenv
+streamlit
+requests
