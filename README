@@ -44,15 +44,8 @@ python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 
 # 2. Set env vars
-cp .env.example .env
-# Add your GROQ_API_KEY to .env
-
-# 3. Run API
-uvicorn apis.main:app --reload --port 8000
-
-# 4. Run UI (separate terminal)
-streamlit run ui/ui_main.py
-```
+DATABASE_URL=postgresql://botgpt:botgpt@localhost:5432/botgpt
+GROQ_API_KEY=your-groq-key
 
 ## Docker
 
